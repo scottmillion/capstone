@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import LineChart from 'components/LineChart';
 
 class Home extends React.Component {
   state = {
@@ -47,11 +48,10 @@ class Home extends React.Component {
         <div>
           <h1>Historic Prices</h1>
           <h2>Time: {bitcoinHistory.time.updated}</h2>
-          <ul>
-        {Object.keys(bitcoinHistory.bpi).map(date => {
-            return <li key={date + '123'}>{date}: {bitcoinHistory.bpi[date]}</li>;
-        })}
-        </ul>
+          
+          <LineChart data={bitcoinHistory.bpi}/>
+        
+        
       </div>)}
       </>
       
