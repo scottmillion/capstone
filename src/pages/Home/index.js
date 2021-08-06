@@ -1,14 +1,60 @@
 import React from 'react';
+import axios from 'axios';
 
 class Home extends React.Component {
   state = {
-    
+    bitcoinCurrent: null,
+    bitcoinHistory: null
   }
-  render() {
+  
+  getCoinBaseData = async () => {
+    try {
+      const {data} = await axios('https://api.coindesk.com/v1/bpi/currentprice.json');
+      this.setState({ bitcoinCurrent: data });
+    } catch (err) {
+      console.log("API bitcoinCurrent Fetch Error");
+    }
+    try {
+      const {data} = await axios('https://api.coindesk.com/v1/bpi/historical/close.json');
+      this.setState({ bitcoinHistory: data });
+    } catch (err) {
+      console.log("API bitcoinHistory Fetch Error");
+    }
+
+  }
+  
+  componentDidMount() {
+    this.getCoinBaseData();
+  }
+
+    render() {
+      const bitcoinCurrent = this.state.bitcoinCurrent;
+      const bitcoinHistory = this.state.bitcoinHistory;      
     return (
-      <div>
-        <h1>This is the home page</h1>
-      </div>
+      <>
+      <h2> This is the homepage... </h2>
+      {bitcoinCurrent && (        
+        <div>
+          <h1>1 Bitcoin Equals</h1>
+          <h2>Time: {bitcoinCurrent.time.updated}</h2>
+          <ul>
+        {Object.keys(bitcoinCurrent.bpi).map(currency => {
+            return <li key={currency + '123'}>{bitcoinCurrent.bpi[currency].code}: {bitcoinCurrent.bpi[currency].rate}</li>;
+        })}
+        </ul>
+      </div>)}
+      {bitcoinHistory && (        
+        <div>
+          <h1>Historic Prices</h1>
+          <h2>Time: {bitcoinHistory.time.updated}</h2>
+          <ul>
+        {Object.keys(bitcoinHistory.bpi).map(date => {
+            return <li key={date + '123'}>{date}: {bitcoinHistory.bpi[date]}</li>;
+        })}
+        </ul>
+      </div>)}
+      </>
+      
     )
   }
 }
