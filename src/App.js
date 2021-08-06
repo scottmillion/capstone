@@ -5,6 +5,12 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import Home from "pages/Home"
+import User from "pages/User"
+import Search from "pages/Search"
+import Coin from "pages/Coin"
+
+
 
 class App extends React.Component {
   render(){
@@ -17,10 +23,10 @@ class App extends React.Component {
               <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to="/about">About</Link>
+              <Link to="/user">User</Link>
             </li>
             <li>
-              <Link to="/users">Users</Link>
+              <Link to="/search">Search</Link>
             </li>
           </ul>
         </nav>
@@ -28,31 +34,16 @@ class App extends React.Component {
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
         <Switch>
-          <Route path="/about">
-            <About />
-          </Route>
-          <Route path="/users">
-            <Users />
-          </Route>
-          <Route path="/">
-            <Home />
-          </Route>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/user" component={User} />
+          <Route exact path="/search" component={Search} />
+          <Route exact path="/coin/:name" component={Coin} />
         </Switch>
       </div>
     </Router>
   );}
 }
 
-function Home() {
-  return <h2>Home</h2>;
-}
 
-function About() {
-  return <h2>About</h2>;
-}
-
-function Users() {
-  return <h2>Users</h2>;
-}
 
 export default App;
